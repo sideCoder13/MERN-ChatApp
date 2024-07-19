@@ -1,4 +1,5 @@
 //package imports
+const path = require('path')
 const express = require('express');
 const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
@@ -11,6 +12,8 @@ const {server, app} = require('./Socket/socket.js')
 //variables
 // const app = express();
 const PORT = process.env.PORT;
+
+const ___dirname = path.resolve();
 
 
 //Middlewares
@@ -26,6 +29,12 @@ app.use(cookieParser()) //to parse incoming cookies from  req.cookie
 // })
 
 app.use("/api/v1", routes);
+
+app.use(express.static(path.join(___dirname, "/frontend/dist")))
+
+app.get("*",(req,res)=>{
+    res.sendFile(path.join(___dirname,"frontend","dist","index.html"))
+})
 
 server.listen(PORT,()=>{
     DbConnect();
