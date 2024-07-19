@@ -1,4 +1,3 @@
-const { ImGift } = require('react-icons/im');
 const User = require('../Modals/User')
 const bcrypt = require('bcrypt')
 const generateJWT = require('../utils/generateJWT')
