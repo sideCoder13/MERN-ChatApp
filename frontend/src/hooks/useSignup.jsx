@@ -1,9 +1,11 @@
 import React,{useState} from 'react'
 import toast from 'react-hot-toast';
+import { useAuthContext } from '../context/AuthContext';
 
 
 const useSignup = () => {
     const [loading, setLoading] = useState(false)
+    const {setUserAuth} = useAuthContext();
 
     const signup = async({fullName,userName,password,confirmPassword,gender}) => {
         const success = handleInputError({fullName,userName,password,confirmPassword,gender});
@@ -11,14 +13,17 @@ const useSignup = () => {
 
         setLoading(true);
         try{
-            const res = await fetch("http://localhost:5000/api/v1/auth/signup",{
+            const res = await fetch("/api/v1/auth/signup",{
                 method:"POST",
                 headers:{"Content-Type":"application/json"},
                 body: JSON.stringify({fullName,userName,password,confirmPassword,gender})
             })
 
-            const data = res.json();
-            console.log(data);
+            const data = await res.json();
+           
+            //create local storage
+            localStorage.setItem("user",JSON.stringify(data));
+            setUserAuth(data);
 
         }catch(err){
             toast.error("Error in siging up")

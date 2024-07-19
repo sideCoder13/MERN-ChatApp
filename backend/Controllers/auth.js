@@ -35,8 +35,8 @@ exports.singupUser = async(req, res)=>{
         }
 
         //create avatar
-        const boyProfile = "https://avatar.iran.liara.run/public/boy"
-        const girlProfile = "https://avatar.iran.liara.run/public/girl"
+        const boyProfile = `https://avatar.iran.liara.run/public/boy?username=${userName}`
+        const girlProfile = `https://avatar.iran.liara.run/public/girl?username=${userName}`
 
         //hash pass
         const hashPass = await bcrypt.hash(password,10);

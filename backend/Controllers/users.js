@@ -7,7 +7,9 @@ exports.getAllUsers = async(req, res) => {
         
         const getAllUsers = await User.find({_id: {$ne:currentUserId}}).select("-password");
 
-        res.status(200).json({All_users: getAllUsers})
+        res.status(200).json({
+            getAllUsers
+        })
 
     }catch(err){
         console.log("Error in getting all user message- ",err);

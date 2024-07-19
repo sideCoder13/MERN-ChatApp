@@ -1,10 +1,11 @@
 const Conversation = require('../Modals/Conversation')
 const Message = require('../Modals/Message')
+const { getReceiverSocketId, io } =  require("../Socket/socket");
 
 
 exports.sendMessage = async(req,res) => {
     try{
-        console.log("Hello")
+        // console.log("Hello")
         //reciver
         const receiverId = req.params.userId;
         //sender
@@ -33,18 +34,25 @@ exports.sendMessage = async(req,res) => {
 			conversation.messages.push(newMessage._id);
 		}
 
-        // SOCKET IO FUNCTIANLAITY
-
         // await conversation.save();
         // await newMessage.save();
 
         //This will run in parallel, so saves time.
         await Promise.all([conversation.save(), newMessage.save()])
+        const Messages = newMessage;
+
+
+        console.log(" SOCKET IO FUNCTIONALITY");
+		const receiverSocketId = getReceiverSocketId(receiverId);
+		if (receiverSocketId) {
+			// io.to(<socket_id>).emit() used to send events to specific client
+			io.to(receiverSocketId).emit("newMessage", newMessage);
+		}
 
         return res.status(201).json({
             success:true,
             message:"Message sent Successfully!",
-            newMessage
+            Messages
         })
     }catch(err){
         console.log("Error in sending message- ",err);

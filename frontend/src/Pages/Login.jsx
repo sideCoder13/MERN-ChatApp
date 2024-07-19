@@ -1,7 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import useLogin from "../hooks/useLogin"
 
 const Login = () => {
+
+  const [value, setValue] = useState({
+    userName:"",
+    password:""
+  })
+
+  const {login} = useLogin();
+
+  async function handleSubmit(e){
+      e.preventDefault();
+      await login(value);
+  }
+
   return (
     <div className='flex h-screen flex-col items-center justify-center min-w-96'>
       <div className = "p-5 h-4/5 flex flex-col items-center justify-center   pl-5 w-full bg-red-900 rounded-md bg-clip-padding backdrop-filter
@@ -12,21 +26,32 @@ const Login = () => {
         </h1>
         
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <>
             <label className='label p-2 '>
               <span className='text-base label-text text-gray-200'>User Name:</span>
             </label>
-            <input type='text' placeholder='Enter your User Name' 
-            className="input input-bordered input-primary w-full max-w-xs"/>
+            <input 
+              type='text' 
+              placeholder='Enter your User Name' 
+              className="input input-bordered input-primary w-full max-w-xs"
+              value={value.userName}
+              onChange={(event)=>setValue({...value,userName:event.target.value})}
+            />
           </>
 
           <>
             <label className='label p-2'>
               <span className='text-base label-text  text-gray-200'>Password:</span>
             </label>
-            <input type='password' placeholder='Enter your Password' 
-            className="input input-bordered input-primary w-full max-w-xs"/>
+            <input 
+              type='password' 
+              placeholder='Enter your Password' 
+              className="input input-bordered input-primary w-full max-w-xs"
+              value={value.password}
+              onChange={(e)=>setValue({...value,password:e.target.value})}
+
+            />
           </>
 
           <>
