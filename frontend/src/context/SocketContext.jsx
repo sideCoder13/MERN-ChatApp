@@ -17,7 +17,7 @@ export const SocketContextProvider = ({children})=>{
 
     useEffect(()=>{
         if(userAuth){
-            const socket = io("http://localhost:5000",{
+            const socket = io("https://chatterbox-a21k.onrender.com",{
                 query:{
                     userId: userAuth._id
                 }
